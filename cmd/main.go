@@ -1,0 +1,31 @@
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/sojebsikder/go-boilerplate/cmd/migrate"
+	"github.com/sojebsikder/go-boilerplate/cmd/server"
+	"github.com/sojebsikder/go-boilerplate/cmd/worker"
+	"github.com/spf13/cobra"
+)
+
+var verbose bool
+
+var RootCmd = &cobra.Command{
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Use --help to see available commands.")
+	},
+}
+
+func main() {
+	RootCmd.AddCommand(server.ServerCmd)
+	RootCmd.AddCommand(worker.WorkerCmd)
+	RootCmd.AddCommand(migrate.MigrateCmd)
+	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose output")
+
+	if err := RootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}

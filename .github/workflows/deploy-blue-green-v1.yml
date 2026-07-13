@@ -1,0 +1,127 @@
+name: Blue-Green Deploy Backend v1
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    env:
+      APP_NAME: backend
+      BLUE_PORT: 4001
+      GREEN_PORT: 4002
+      NGINX_UPSTREAM: /etc/nginx/conf.d/backend_upstream.conf
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check whoami
+        run: |
+          echo "Whoami: $(whoami)"
+
+      - name: Pull latest code
+        run: |
+          cd /var/www/backend
+          git fetch --all
+          git reset --hard origin/main
+          git pull origin main
+
+      - name: Record deployment start time
+        run: |
+          echo "DEPLOY_START=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Detect active environment
+        id: active
+        run: |
+          if grep -q "4001" $NGINX_UPSTREAM; then
+            echo "ACTIVE=blue" >> $GITHUB_ENV
+            echo "INACTIVE=green" >> $GITHUB_ENV
+            echo "NEW_PORT=$GREEN_PORT" >> $GITHUB_ENV
+          else
+            echo "ACTIVE=green" >> $GITHUB_ENV
+            echo "INACTIVE=blue" >> $GITHUB_ENV
+            echo "NEW_PORT=$BLUE_PORT" >> $GITHUB_ENV
+          fi
+
+      - name: Build Docker image
+        run: |
+          cd /var/www/backend
+          sudo docker compose build ${APP_NAME}_${INACTIVE}
+
+      - name: Start inactive environment
+        run: |
+          cd /var/www/backend
+          sudo -E docker compose up --force-recreate ${APP_NAME}_${INACTIVE} -d
+
+      - name: Health check new environment
+        run: |
+          echo "Waiting for app to be healthy..."
+          echo "PORT=$NEW_PORT"
+          for i in {1..300}; do
+            if curl -sf http://127.0.0.1:$NEW_PORT/health; then
+              echo "Healthy"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Health check failed"
+          exit 1
+
+      - name: Switch NGINX upstream
+        run: |
+          cat <<EOF | sudo tee /etc/nginx/conf.d/backend_upstream.conf > /dev/null
+          upstream backend_upstream {
+              server 127.0.0.1:$NEW_PORT;
+          }
+          EOF
+
+          sudo nginx -t
+          sudo nginx -s reload
+
+      - name: Stop old environment
+        run: |
+          cd /var/www/backend
+          sudo docker compose stop ${APP_NAME}_${ACTIVE}
+          sudo docker compose rm -f ${APP_NAME}_${ACTIVE}
+
+      - name: Cleanup unused images
+        run: |
+          sudo docker image prune -f
+
+      - name: Notify Slack
+        if: always()
+        run: |
+          DEPLOY_END=$(date +%s)
+          DURATION=$((DEPLOY_END - DEPLOY_START))
+
+          if [ "${{ job.status }}" = "success" ]; then
+            STATUS_EMOJI="[success]"
+            STATUS_TEXT="Backend Deployment Successful"
+          else
+            STATUS_EMOJI="❌"
+            STATUS_TEXT="Backend Deployment Failed"
+          fi
+
+          MESSAGE="$STATUS_EMOJI *$STATUS_TEXT*
+          *Repo:* $GITHUB_REPOSITORY
+          *Branch:* $GITHUB_REF_NAME
+          *Commit:* $GITHUB_SHA
+          *Workflow:* $GITHUB_WORKFLOW
+          *Environment:* $ACTIVE → $INACTIVE
+          *Server:* $(hostname)
+          *Duration:* ${DURATION}s
+          *Logs:* https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+          curl -s -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "$(jq -n \
+              --arg channel "${{ secrets.SLACK_CHANNEL_ID }}" \
+              --arg text "$MESSAGE" \
+              '{channel: $channel, text: $text}')"
