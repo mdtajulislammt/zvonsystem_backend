@@ -1,7 +1,7 @@
 package asynqfx
 
 import (
-	authtask "github.com/sojebsikder/go-boilerplate/internal/modules/auth/task"
+	authtask "github.com/mdtajulislammt/zvonsystem_backend/internal/modules/auth/task"
 	"go.uber.org/fx"
 )
 

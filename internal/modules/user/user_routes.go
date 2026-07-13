@@ -2,7 +2,7 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sojebsikder/go-boilerplate/internal/middleware"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/middleware"
 )
 
 func RegisterRoutes(r *gin.Engine, c *UserController) {

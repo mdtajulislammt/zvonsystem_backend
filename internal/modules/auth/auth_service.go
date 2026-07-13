@@ -8,10 +8,10 @@ import (
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/hibiken/asynq"
-	"github.com/sojebsikder/go-boilerplate/internal/config"
-	"github.com/sojebsikder/go-boilerplate/internal/model"
-	authtask "github.com/sojebsikder/go-boilerplate/internal/modules/auth/task"
-	"github.com/sojebsikder/go-boilerplate/internal/repository"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/config"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/model"
+	authtask "github.com/mdtajulislammt/zvonsystem_backend/internal/modules/auth/task"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/repository"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -39,7 +39,7 @@ func NewAuthService(
 
 func (s *AuthService) Hello(ctx context.Context) (string, error) {
 	// add task to queue
-	task, err := authtask.NewAuthTask("Sojeb")
+	task, err := authtask.NewAuthTask("Tajul")
 	if err != nil {
 		s.logger.Error("failed to create task", zap.Error(err))
 		return "", errors.New("failed to create task")

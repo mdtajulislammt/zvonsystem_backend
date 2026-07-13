@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 
-	"github.com/sojebsikder/go-boilerplate/internal/model"
-	"github.com/sojebsikder/go-boilerplate/internal/repository"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/model"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/repository"
 )
 
 type UserService struct {

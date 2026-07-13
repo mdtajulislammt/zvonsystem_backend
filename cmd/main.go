@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sojebsikder/go-boilerplate/cmd/migrate"
-	"github.com/sojebsikder/go-boilerplate/cmd/server"
-	"github.com/sojebsikder/go-boilerplate/cmd/worker"
+	"github.com/mdtajulislammt/zvonsystem_backend/cmd/migrate"
+	"github.com/mdtajulislammt/zvonsystem_backend/cmd/server"
+	"github.com/mdtajulislammt/zvonsystem_backend/cmd/worker"
 	"github.com/spf13/cobra"
 )
 

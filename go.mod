@@ -1,4 +1,4 @@
-module github.com/sojebsikder/go-boilerplate
+module github.com/mdtajulislammt/zvonsystem_backend
 
 go 1.24.2
 

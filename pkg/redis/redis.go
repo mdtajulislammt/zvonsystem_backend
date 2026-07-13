@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/sojebsikder/go-boilerplate/internal/config"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/config"
 )
 
 type Redis struct {

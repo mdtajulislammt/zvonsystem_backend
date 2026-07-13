@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/config"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/sojebsikder/go-boilerplate/internal/config"
-	"github.com/sojebsikder/go-boilerplate/internal/middleware"
-	"github.com/sojebsikder/go-boilerplate/internal/modules/metrics"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/middleware"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/modules/metrics"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 
@@ -28,6 +28,13 @@ func SetupRouter(lc fx.Lifecycle, ctg *config.Config, r *gin.Engine, log *zap.Lo
 	r.GET("/health", func(c *gin.Context) {
 		log.Info("health_check")
 		c.JSON(200, gin.H{"status": "ok"})
+	})
+
+	r.GET("/api", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome to ZvonSystem API",
+			"success": true,
+		})
 	})
 
 	lc.Append(fx.Hook{

@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/sojebsikder/go-boilerplate/internal/model"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/model"
 	"gorm.io/gorm"
 )
 

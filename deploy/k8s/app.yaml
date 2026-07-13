@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: myapp
-          image: sojebsikder/myapp:latest
+          image: tajulislammt/myapp:latest
           ports:
             - containerPort: 4000
           envFrom:

@@ -2,10 +2,10 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sojebsikder/go-boilerplate/internal/app"
-	"github.com/sojebsikder/go-boilerplate/internal/config"
-	"github.com/sojebsikder/go-boilerplate/internal/middleware"
-	"github.com/sojebsikder/go-boilerplate/internal/routes"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/config"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/app"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/middleware"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/routes"
 
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"

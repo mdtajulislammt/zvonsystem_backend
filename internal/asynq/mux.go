@@ -2,7 +2,7 @@ package asynqfx
 
 import (
 	"github.com/hibiken/asynq"
-	authtask "github.com/sojebsikder/go-boilerplate/internal/modules/auth/task"
+	authtask "github.com/mdtajulislammt/zvonsystem_backend/internal/modules/auth/task" 
 )
 
 func NewMux(

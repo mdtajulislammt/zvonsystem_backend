@@ -1,7 +1,7 @@
 package migrate
 
 import (
-	"github.com/sojebsikder/go-boilerplate/internal/config"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/config"
 	"github.com/spf13/cobra"
 )
 

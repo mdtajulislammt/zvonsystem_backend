@@ -1,15 +1,15 @@
 package app
 
 import (
-	asynqfx "github.com/sojebsikder/go-boilerplate/internal/asynq"
-	"github.com/sojebsikder/go-boilerplate/internal/config"
-	"github.com/sojebsikder/go-boilerplate/internal/modules/auth"
-	"github.com/sojebsikder/go-boilerplate/internal/modules/user"
-	"github.com/sojebsikder/go-boilerplate/internal/repository"
-	"github.com/sojebsikder/go-boilerplate/pkg/ORM"
-	"github.com/sojebsikder/go-boilerplate/pkg/logger"
-	"github.com/sojebsikder/go-boilerplate/pkg/redis"
-	"github.com/sojebsikder/go-boilerplate/pkg/s3client"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/config"
+	asynqfx "github.com/mdtajulislammt/zvonsystem_backend/internal/asynq"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/modules/auth"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/modules/user"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/repository"
+	"github.com/mdtajulislammt/zvonsystem_backend/pkg/ORM"
+	"github.com/mdtajulislammt/zvonsystem_backend/pkg/logger"
+	"github.com/mdtajulislammt/zvonsystem_backend/pkg/redis"
+	"github.com/mdtajulislammt/zvonsystem_backend/pkg/s3client"
 	"go.uber.org/fx"
 )
 

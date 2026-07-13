@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/sojebsikder/go-boilerplate/internal/modules/auth"
-	"github.com/sojebsikder/go-boilerplate/internal/modules/user"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/modules/auth"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/modules/user"
 	"go.uber.org/fx"
 )
 

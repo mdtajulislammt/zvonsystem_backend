@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/sojebsikder/go-boilerplate/internal/config"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

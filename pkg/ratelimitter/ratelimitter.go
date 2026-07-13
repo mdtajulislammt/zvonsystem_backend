@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sojebsikder/go-boilerplate/internal/config"
-	"github.com/sojebsikder/go-boilerplate/pkg/redis"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/config"
+	"github.com/mdtajulislammt/zvonsystem_backend/pkg/redis"
 )
 
 type RateLimiter struct {

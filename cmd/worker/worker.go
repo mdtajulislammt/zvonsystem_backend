@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/hibiken/asynq"
-	"github.com/sojebsikder/go-boilerplate/internal/app"
-	asynqfx "github.com/sojebsikder/go-boilerplate/internal/asynq"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/app"
+	asynqfx "github.com/mdtajulislammt/zvonsystem_backend/internal/asynq"
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"

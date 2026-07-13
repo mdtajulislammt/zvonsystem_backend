@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hibiken/asynq"
-	"github.com/sojebsikder/go-boilerplate/internal/config"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/config"
 )
 
 func AsynqRedisOpt(cfg *config.Config) (asynq.RedisClientOpt, error) {

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: myapp-worker
-          image: sojebsikder/myapp:latest
+          image: mdtajulislammt/myapp:latest
           args: ["worker"]
           envFrom:
             - configMapRef:

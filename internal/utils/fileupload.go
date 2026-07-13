@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	s3Client "github.com/sojebsikder/go-boilerplate/pkg/s3client"
+	s3Client "github.com/mdtajulislammt/zvonsystem_backend/pkg/s3client"
 )
 
 type FileUploadOpts struct {

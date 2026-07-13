@@ -5,22 +5,36 @@ services:
       dockerfile: Dockerfile
     image: myapp:latest
     container_name: myapp
+    command: ["server"] # Cobra CLI কে সার্ভার মোডে রান করার নির্দেশ
     ports:
       - "4000:4000"
     volumes:
-      - ./.env.prod:/app/.env:ro
+      - ./.env:/app/.env:ro 
       - ./logs:/app/logs
+      - ./migrations:/app/migrations:ro # মাইগ্রেশন পাথ মাউন্ট
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
     restart: unless-stopped
 
   worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: myapp:latest
     container_name: myapp-worker
-    command: ["worker"]
+    command: ["worker"] # Cobra CLI কে ব্যাকগ্রাউন্ড ওয়ার্কার মোডে রান করার নির্দেশ
     volumes:
-      - ./.env.prod:/app/.env:ro
+      - ./.env:/app/.env:ro
       - ./logs:/app/logs
+      - ./migrations:/app/migrations:ro # ওয়ার্কার ক্র্যাশ বন্ধ করতে এখানেও মাউন্ট করা হলো
+    depends_on:
+      myapp:
+        condition: service_started
     restart: unless-stopped
 
   postgres:
@@ -31,9 +45,14 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: backend
+      POSTGRES_DB: zvonsystem  
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d zvonsystem"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:latest
@@ -48,7 +67,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./infra/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./deploy/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     environment:
       - PROMETHEUS_STORAGE_LOCAL_PATH=/prometheus
@@ -60,7 +79,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin # Set the admin password here
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
       - loki
@@ -74,7 +93,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./infra/monitoring/loki/loki-config.yml:/mnt/config/loki-config.yml # <local-path> → ./config
+      - ./deploy/monitoring/loki/loki-config.yml:/mnt/config/loki-config.yml
     command: --config.file=/mnt/config/loki-config.yml
     restart: unless-stopped
 
@@ -84,7 +103,7 @@ services:
     depends_on:
       - loki
     volumes:
-      - ./infra/monitoring/promtail/promtail-config.yml:/mnt/config/promtail-config.yml # <local-path> → same local path
+      - ./deploy/monitoring/promtail/promtail-config.yml:/mnt/config/promtail-config.yml
       - ./logs:/var/log
     command: --config.file=/mnt/config/promtail-config.yml
     restart: unless-stopped
@@ -103,8 +122,8 @@ services:
       - "9121:9121"
     environment:
       REDIS_ADDR: redis:6379
-    # depends_on:
-    #   - redis
+    depends_on:
+      - redis
     restart: unless-stopped
 
   postgres_exporter:
@@ -113,9 +132,9 @@ services:
     ports:
       - "9187:9187"
     environment:
-      DATA_SOURCE_NAME: "postgresql://exporter:strong-password@postgres:5432/testdemo?sslmode=disable"
-    # depends_on:
-    #   - postgres
+      DATA_SOURCE_NAME: "postgresql://postgres:root@postgres:5432/zvonsystem?sslmode=disable"
+    depends_on:
+      - postgres
     restart: unless-stopped
 
   rustfs:

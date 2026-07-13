@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	cfg "github.com/sojebsikder/go-boilerplate/internal/config"
+	cfg "github.com/mdtajulislammt/zvonsystem_backend/internal/config"
 )
 
 type S3Client struct {

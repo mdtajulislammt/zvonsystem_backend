@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sojebsikder/go-boilerplate/internal/model"
+	"github.com/mdtajulislammt/zvonsystem_backend/internal/model"
 )
 
 type UserController struct {
